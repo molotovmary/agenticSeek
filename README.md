@@ -38,9 +38,9 @@ Disclaimer: This demo, including all the files that appear (e.g: CV_candidates.z
 
 ## Prerequisites
 
-Make sure you have chrome driver, docker and python3.10 installed.
+Make sure you have Brave browser, chrome driver, docker and python3.10 installed.
 
-For issues related to chrome driver, see the **Chromedriver** section.
+For issues related to chrome driver with Brave, see the **Chromedriver** section.
 
 ### 1. **Clone the repository and setup**
 
@@ -461,7 +461,7 @@ provider_server_address = 127.0.0.1:5000
 **Known error #1:** *chromedriver mismatch*
 
 `Exception: Failed to initialize browser: Message: session not created: This version of ChromeDriver only supports Chrome version 113
-Current browser version is 134.0.6998.89 with binary path`
+Current Brave/Chromium browser version is 134.0.6998.89 with binary path`
 
 This happen if there is a mismatch between your browser and chromedriver version.
 
@@ -469,7 +469,7 @@ You need to navigate to download the latest version:
 
 https://developer.chrome.com/docs/chromedriver/downloads
 
-If you're using Chrome version 115 or newer go to:
+If you're using Brave (Chromium) version 115 or newer go to:
 
 https://googlechromelabs.github.io/chrome-for-testing/
 

@@ -31,48 +31,45 @@ from sources.utility import pretty_print, animate_thinking
 from sources.logger import Logger
 
 
-def get_chrome_path() -> str:
-    """Get the path to the Chrome executable."""
+def get_brave_path() -> str:
+    """Get the path to the Brave browser executable."""
     if sys.platform.startswith("win"):
         paths = [
-            "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-            "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-            os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google\\Chrome\\Application\\chrome.exe")  # User install
+            "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+            "C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+            os.path.join(os.environ.get("LOCALAPPDATA", ""), "BraveSoftware\\Brave-Browser\\Application\\brave.exe")  # User install
         ]
     elif sys.platform.startswith("darwin"):  # macOS
-        paths = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-                 "/Applications/Google Chrome Beta.app/Contents/MacOS/Google Chrome Beta"]
+        paths = ["/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"]
     else:  # Linux
-        paths = ["/usr/bin/google-chrome",
-                 "/opt/chrome/chrome",
-                 "/usr/bin/chromium-browser",
-                 "/usr/bin/chromium",
-                 "/usr/local/bin/chrome",
-                 "/opt/google/chrome/chrome-headless-shell",
-                 #"/app/chrome_bundle/chrome136/chrome-linux64"
+        paths = ["/usr/bin/brave-browser",
+                 "/usr/bin/brave",
+                 "/usr/bin/brave-browser-stable",
+                 "/usr/local/bin/brave-browser",
+                 "/opt/brave.com/brave/brave"
                 ]
 
     for path in paths:
         if os.path.exists(path) and os.access(path, os.X_OK):
             return path
-    print("Looking for Google Chrome in these locations failed:")
+    print("Looking for Brave browser in these locations failed:")
     print('\n'.join(paths))
-    chrome_path_env = os.environ.get("CHROME_EXECUTABLE_PATH")
-    if chrome_path_env and os.path.exists(chrome_path_env) and os.access(chrome_path_env, os.X_OK):
-        return chrome_path_env
-    path = input("Google Chrome not found. Please enter the path to the Chrome executable: ")
+    brave_path_env = os.environ.get("BRAVE_EXECUTABLE_PATH")
+    if brave_path_env and os.path.exists(brave_path_env) and os.access(brave_path_env, os.X_OK):
+        return brave_path_env
+    path = input("Brave browser not found. Please enter the path to the Brave executable: ")
     if os.path.exists(path) and os.access(path, os.X_OK):
-        os.environ["CHROME_EXECUTABLE_PATH"] = path
-        print(f"Chrome path saved to environment variable CHROME_EXECUTABLE_PATH")
+        os.environ["BRAVE_EXECUTABLE_PATH"] = path
+        print(f"Brave path saved to environment variable BRAVE_EXECUTABLE_PATH")
         return path
     return None
 
 def get_random_user_agent() -> str:
     """Get a random user agent string with associated vendor."""
     user_agents = [
-        {"ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36", "vendor": "Google Inc."},
-        {"ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36", "vendor": "Apple Inc."},
-        {"ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36", "vendor": "Google Inc."},
+        {"ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Brave/1.64.114", "vendor": "Google Inc."},
+        {"ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_6_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Brave/1.64.114", "vendor": "Apple Inc."},
+        {"ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Brave/1.64.114", "vendor": "Google Inc."},
     ]
     return random.choice(user_agents)
 
@@ -90,7 +87,7 @@ def install_chromedriver() -> str:
                 "ChromeDriver not found and could not be installed automatically. "
                 "Please install it manually from https://chromedriver.chromium.org/downloads."
                 "and ensure it's in your PATH or specify the path directly."
-                "See know issues in readme if your chrome version is above 115."
+                "See known issues in readme if your Brave/Chrome version is above 115."
             ) from e
     if not chromedriver_path:
         raise FileNotFoundError("ChromeDriver not found. Please install it or add it to your PATH.")
@@ -120,12 +117,12 @@ def create_undetected_chromedriver(service, chrome_options) -> webdriver.Chrome:
     return driver
 
 def create_driver(headless=False, stealth_mode=True, crx_path="./crx/nopecha.crx", lang="en") -> webdriver.Chrome:
-    """Create a Chrome WebDriver with specified options."""
+    """Create a Brave WebDriver with specified options."""
     chrome_options = Options()
-    chrome_path = get_chrome_path()
+    chrome_path = get_brave_path()
     
     if not chrome_path:
-        raise FileNotFoundError("Google Chrome not found. Please install it.")
+        raise FileNotFoundError("Brave browser not found. Please install it.")
     chrome_options.binary_location = chrome_path
     
     if headless:
